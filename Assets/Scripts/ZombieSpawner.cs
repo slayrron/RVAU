@@ -1,0 +1,126 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using Photon.Pun;
+
+public class ZombieSpawner : MonoBehaviour
+{
+    public enum SpawnState { SPAWNING, WAITING, COUNTING };
+
+    // VARIABLES
+    [SerializeField] private Wave[] waves;
+
+    [SerializeField] private float timeBetweenWaves = 3f;
+    [SerializeField] private float startingWaveCountdown = 0;
+
+    private SpawnState state = SpawnState.COUNTING;
+
+    private int currentWave;
+    public AudioSource source;
+    public AudioClip endRoundSound;
+    public AudioClip startRoundSound;
+
+    // REFERENCES
+    [SerializeField] private Transform[] spawners;
+    [SerializeField] private List<GameObject> zombiesList;
+
+    private void Start()
+    {
+        startingWaveCountdown = timeBetweenWaves;
+        currentWave = 0;
+    }
+
+    private void Update()
+    {
+        //Prevent spawning dupplication and wait for the second 
+        if (PhotonNetwork.IsMasterClient == false || PhotonNetwork.CurrentRoom.PlayerCount != 2)
+        {
+            //return;
+        }
+        if (state == SpawnState.WAITING)
+        {
+            // Check if all zombies are dead
+            if (!ZombiesAreDead())
+            {
+                return;
+            }
+            // Wave finished
+            else
+            {
+                CompleteWave();
+            }
+        }
+        if (startingWaveCountdown <= 0)
+        {
+            if (state != SpawnState.SPAWNING)
+            {
+                StartCoroutine(SpawnWave(waves[currentWave]));
+            }
+        }
+        else
+        {
+            startingWaveCountdown -= Time.deltaTime;
+        }
+    }
+
+    private IEnumerator SpawnWave(Wave wave)
+    {
+        source.PlayOneShot(startRoundSound);
+        state = SpawnState.SPAWNING;
+
+        for (int i = 0; i < wave.zombiesAmount; i++)
+        {
+            SpawnZombie(wave.zombie);
+            yield return new WaitForSeconds(wave.delay);
+        }
+       
+
+        state = SpawnState.WAITING;
+
+        yield break;
+    }
+
+
+    private void SpawnZombie(GameObject zombie)
+    {
+        int spawner_id = Random.Range(0, spawners.Length);
+        Transform selectedSpawner = spawners[spawner_id];
+        GameObject newZombie = PhotonNetwork.Instantiate(zombie.name, selectedSpawner.position, selectedSpawner.rotation);
+        //GameObject newZombie = Instantiate(zombie, selectedSpawner.position, selectedSpawner.rotation);
+
+        zombiesList.Add(newZombie);
+    }
+
+    private bool ZombiesAreDead()
+    {
+        foreach (GameObject zombie in zombiesList)
+        {
+            // Check if the zombie is still active
+            if (zombie != null)
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private void CompleteWave()
+    {
+        Debug.Log("Wave completed");
+        source.PlayOneShot(endRoundSound);
+
+        state = SpawnState.COUNTING;
+        // BREAKTIME
+        startingWaveCountdown = timeBetweenWaves;
+
+        if (currentWave == waves.Length - 1)
+        {
+            // Reroll the last wave
+            Debug.Log("END GAME");
+        }
+        else
+        {
+            currentWave++; 
+        }
+    }
+}
