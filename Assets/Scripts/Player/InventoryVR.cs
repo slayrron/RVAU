@@ -2,6 +2,7 @@
 // Script purpose: attaching a gameobject to a certain anchor and having the ability to enable and disable it.
 // This script is a property of Realary, Inc
 
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -14,8 +15,13 @@ public class InventoryVR : MonoBehaviour
     public GameObject Anchor;
     bool UIActive;
 
-    private void Start()
+    PhotonView view;
+
+    void Start()
     {
+        view = Inventory.GetComponent<PhotonView>();
+        if (view == null)
+            Debug.Log("Non");
         Inventory.SetActive(false);
         UIActive = false;
     }

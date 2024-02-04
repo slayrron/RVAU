@@ -5,11 +5,11 @@ using UnityEngine.XR.Interaction.Toolkit;
 using Photon.Pun;
 public class XRGrabNetworkInteractable : XRGrabInteractable
 {
-    private PhotonView photonView;
+    private PhotonView view;
     // Start is called before the first frame update
     void Start()
     {
-        photonView = GetComponent<PhotonView>();
+        view = GetComponent<PhotonView>();
         
     }
 
@@ -21,7 +21,7 @@ public class XRGrabNetworkInteractable : XRGrabInteractable
 
     protected override void OnSelectEntered(XRBaseInteractor interactor)
     {
-        photonView.RequestOwnership();
+        view.RequestOwnership();
         base.OnSelectEntered(interactor);
     }
 
@@ -31,14 +31,26 @@ public class XRGrabNetworkInteractable : XRGrabInteractable
 
         //Added for inventory
 
-        if (gameObject.GetComponent<Item>() == null) return;
+        if (gameObject.GetComponent<Item>() == null)
+        {
+            return;
+        }
         if (gameObject.GetComponent<Item>().inSlot)
         {
-            gameObject.GetComponent<Item>().inSlot = false;
-            gameObject.GetComponent<Item>().currentSlot.ResetColor();
-            gameObject.GetComponent<Item>().currentSlot = null;
-            
+            grabMoneyFromInventory();
         }
+    }
+
+    public void grabMoneyFromInventory()
+    {
+        view.RPC("grabMoneyFromInventoryRPC", RpcTarget.All);
+    }
+
+    public void grabMoneyFromInventoryRPC()
+    {
+        gameObject.GetComponent<Item>().inSlot = false;
+        gameObject.GetComponent<Item>().currentSlot.ResetColor();
+        gameObject.GetComponent<Item>().currentSlot = null;
     }
 
 }

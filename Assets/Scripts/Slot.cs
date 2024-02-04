@@ -1,3 +1,4 @@
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,8 +7,11 @@ using UnityEngine.XR;
 public class Slot : MonoBehaviour
 {
     public GameObject ItemInSlot;
+    public GameObject money;
     //public Image slotImage;
     Color originalColor;
+    PhotonView view;
+    bool test = false;
 
     // Start is called before the first frame update
     void Start()
@@ -15,9 +19,19 @@ public class Slot : MonoBehaviour
         //slotImage = GetComponent<Image>();
         //originalColor = slotImage.color;
 
-        if (this.name == "Slot 1")
+        view = GetComponent<PhotonView>();
+        if (view == null )
         {
-            InsertItem(GameObject.FindWithTag("Money"));
+            Debug.Log("null");
+        }
+    }
+
+    private void Update()
+    {
+        if( PhotonNetwork.CurrentRoom.PlayerCount == 2 && test == false && this.name == "Slot 1")
+        {
+            InsertMoney();
+            test = true;
         }
     }
 
@@ -40,7 +54,29 @@ public class Slot : MonoBehaviour
         return obj.GetComponent<Item>();
     }
 
-    void InsertItem(GameObject obj)
+    public void InsertMoney()
+    {
+        Debug.Log("InsertMoney");
+        view.RPC("InsertMoneyRPC", RpcTarget.All);
+       
+    }
+
+    [PunRPC]
+    public void InsertMoneyRPC() 
+    {
+        Debug.Log("RPC");
+        GameObject m = PhotonNetwork.Instantiate("10000dol", transform.position, transform.rotation);
+        m.GetComponent<Rigidbody>().isKinematic = true;
+        m.transform.SetParent(gameObject.transform, true);
+        m.transform.localPosition = Vector3.zero;
+        m.transform.localEulerAngles = m.GetComponent<Item>().slotRotation;
+        m.GetComponent<Item>().inSlot = true;
+        m.GetComponent<Item>().currentSlot = this;
+        ItemInSlot = m;
+    }
+
+
+    public void InsertItem(GameObject obj)
     {
         obj.GetComponent<Rigidbody>().isKinematic = true;
         obj.transform.SetParent(gameObject.transform, true);
