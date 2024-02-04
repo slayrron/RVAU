@@ -1,13 +1,22 @@
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
+using static UnityEngine.UI.Image;
 
 public class Weapon : MonoBehaviour
 {
+    public enum WeaponState { BUYABLE, SOLD };
+    public WeaponState state;
 
     public int price;
     private XRGrabNetworkInteractable networkInteractable;
+
+    public void Start()
+    {
+        state = WeaponState.BUYABLE;
+    }
 
     private void OnEnable()
     {
@@ -22,24 +31,17 @@ public class Weapon : MonoBehaviour
     public void PickupWeapon(XRBaseInteractor interactor)
     {
         // Get The player in the tree (Controller -> Camera -> Player XR Rig)
-        Transform playerTransform = interactor.transform.parent.parent;
-        UnityEngine.Debug.Log(interactor.transform.name);
+        GameObject player = GameObject.FindWithTag("Player");
 
-        Player playerScript = playerTransform.GetComponent<Player>();
+        Player playerScript = player.GetComponent<Player>();
 
-        Transform weaponSlot = playerTransform.Find("WeaponSlot");
-
-        if (weaponSlot != null)
+        if (state == WeaponState.BUYABLE)
         {
-            // Set the player as the parent of the weapon
-            transform.SetParent(weaponSlot);
+            state = WeaponState.SOLD;
             playerScript.BuyWeapon(price);
         }
-        else
-        {
-            Debug.LogError("Weapon slot not found on the player!");
-        }
     }
+
 
     private void OnTriggerEnter(Collider other)
     {

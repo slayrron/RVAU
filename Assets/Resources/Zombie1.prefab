@@ -680,7 +680,7 @@ MonoBehaviour:
   zombieAnimator: {fileID: 0}
   player: {fileID: 0}
   playerScript: {fileID: 0}
-  followDistance: 15
+  followDistance: 5
 --- !u!65 &7684844121278138174
 BoxCollider:
   m_ObjectHideFlags: 0

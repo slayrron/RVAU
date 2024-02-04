@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using Photon.Realtime;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -98,7 +99,7 @@ public class SimpleShoot : MonoBehaviour
     {
         zombieComponent.TakeDamage(1);
         
-        Player playerScript = transform.parent.parent.parent.GetComponent<Player>();
+        Player playerScript =  GameObject.FindWithTag("Player").GetComponent<Player>();
         if (playerScript != null)
         {
             playerScript.GainMoney(10);

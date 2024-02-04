@@ -25,4 +25,20 @@ public class XRGrabNetworkInteractable : XRGrabInteractable
         base.OnSelectEntered(interactor);
     }
 
+    protected override void OnActivate(XRBaseInteractor interactor)
+    {
+        base.OnActivate(interactor);
+
+        //Added for inventory
+
+        if (gameObject.GetComponent<Item>() == null) return;
+        if (gameObject.GetComponent<Item>().inSlot)
+        {
+            gameObject.GetComponent<Item>().inSlot = false;
+            gameObject.GetComponent<Item>().currentSlot.ResetColor();
+            gameObject.GetComponent<Item>().currentSlot = null;
+            
+        }
+    }
+
 }
