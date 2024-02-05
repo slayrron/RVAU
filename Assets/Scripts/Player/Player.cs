@@ -24,7 +24,7 @@ public class Player : MonoBehaviour
     public int money = 0;
     [SerializeField] FloatingHealthBar healthBar;
     private Ressources ressources;
-    private float lastTimeInjured = 0;
+    private float lastTimeInjured;
     public ActionBasedContinuousMoveProvider continuousMoveProvider;
 
     PhotonView view;
@@ -35,6 +35,7 @@ public class Player : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        view = GetComponent<PhotonView>();
         ressources = GetComponent<Ressources>();
         healthBar = GetComponentInChildren<FloatingHealthBar>();
         health = maxHealth;
@@ -45,6 +46,7 @@ public class Player : MonoBehaviour
     {
         if (state == playerState.KO)
         {
+            Debug.Log("Player is KO");
             continuousMoveProvider.enabled = false;
         }
         else
@@ -60,15 +62,22 @@ public class Player : MonoBehaviour
     public void TakeDamage(float damageAmount)
     {
         view.RPC("TakeDamageRPC", RpcTarget.All, damageAmount);
+        lastTimeInjured = Time.time;
     }
-
 
     [PunRPC]
     public void TakeDamageRPC(float damageAmount)
     {
-        lastTimeInjured = Time.time;
-        health -= damageAmount;
-        healthBar.UpdateHealthBar(health, maxHealth);
+        if (health <= 0)
+        {
+            state = playerState.KO;
+        }
+        else
+        {       
+            health -= damageAmount;
+            Debug.Log("Ouch !");
+            healthBar.UpdateHealthBar(health, maxHealth);
+        }
     }
 
     public void GainMoney(int amount)
