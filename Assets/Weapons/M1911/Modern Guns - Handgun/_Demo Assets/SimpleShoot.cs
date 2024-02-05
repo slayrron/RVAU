@@ -1,11 +1,16 @@
 ﻿using Photon.Realtime;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 [AddComponentMenu("Nokobot/Modern Guns/Simple Shoot")]
 public class SimpleShoot : MonoBehaviour
 {
+    public int ammoMag = 7;
+    private int currentammo;
+
+    public TextMeshProUGUI text;
     [Header("Prefab Refrences")]
     public GameObject bulletPrefab;
     public GameObject casingPrefab;
@@ -23,9 +28,12 @@ public class SimpleShoot : MonoBehaviour
 
     public AudioSource source;
     public AudioClip fireSound;
+    public AudioClip reloadSound;
+    public AudioClip noammoSound;
 
     void Start()
     {
+        currentammo = ammoMag;
         if (barrelLocation == null)
             barrelLocation = transform;
 
@@ -33,18 +41,41 @@ public class SimpleShoot : MonoBehaviour
             gunAnimator = GetComponentInChildren<Animator>();
     }
 
+    void Reload()
+    {
+        currentammo = ammoMag;
+        source.PlayOneShot(reloadSound);
+    }
+
     public void PullTheTrigger()
     {
         {
             //Calls animation on the gun that has the relevant animation events that will fire
-            gunAnimator.SetTrigger("Fire");
+            if (currentammo > 0)
+            {
+                gunAnimator.SetTrigger("Fire");
+            }
+            else
+            {
+                source.PlayOneShot(noammoSound);
+            }
         }
+    }
+
+    private void Update()
+    {
+       if (Vector3.Angle(transform.up, Vector3.up) > 100 && currentammo < ammoMag)
+        {
+            Reload();
+        }
+       text.text = currentammo.ToString();
     }
 
 
     //This function creates the bullet behavior
     void Shoot()
     {
+        currentammo--;
         source.PlayOneShot(fireSound);
         if (muzzleFlashPrefab)
         {
