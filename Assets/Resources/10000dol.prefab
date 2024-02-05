@@ -386,6 +386,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9f90a356984f7d944aab244a88d3a6a6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  amount: 0
   source: {fileID: 5614192062185111585}
   registerSound: {fileID: 8300000, guid: 17fedb12c490e8546984384df23e150c, type: 3}
 --- !u!82 &5614192062185111585

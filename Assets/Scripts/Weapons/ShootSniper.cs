@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.XR.Interaction.Toolkit;
 
 public class ShootSniper : MonoBehaviour
 {
@@ -9,12 +10,9 @@ public class ShootSniper : MonoBehaviour
     public GameObject casingPrefab;
     public GameObject muzzleFlashPrefab;
 
-    [SerializeField] private Animator gunAnimator;
-    [SerializeField] private Transform barrelLocation;
-
+    private Transform barrelLocation;
     [Tooltip("Specify time to destory the casing object")][SerializeField] private float destroyTimer = 2f;
-    [Tooltip("Bullet Speed")][SerializeField] private float shotPower = 500f;
-    [Tooltip("Casing Ejection Speed")][SerializeField] private float ejectPower = 150f;
+    [Tooltip("Bullet Speed")] private float shotPower = 500f;
 
     public AudioSource source;
     public AudioClip fireSound;
@@ -22,21 +20,19 @@ public class ShootSniper : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        XRGrabNetworkInteractable grabbable = GetComponent<XRGrabNetworkInteractable>();
+        grabbable.activated.AddListener(FireBullet);
         if (barrelLocation == null)
-            barrelLocation = transform;
-    }
-
-    public void PullTheTrigger()
-    {
         {
-            //Calls animation on the gun that has the relevant animation events that will fire
-            gunAnimator.SetTrigger("Fire");
+            barrelLocation = transform;
         }
+            
     }
+    
 
-    void Shoot()
+    void FireBullet(ActivateEventArgs arg)
     {
-        source.PlayOneShot(fireSound);
+        //source.PlayOneShot(fireSound);
         if (muzzleFlashPrefab)
         {
             //Create the muzzle flash
@@ -52,18 +48,28 @@ public class ShootSniper : MonoBehaviour
         { return; }
 
         // Create a bullet and add force on it in direction of the barrel
-        GameObject bullet;
-        bullet = Instantiate(bulletPrefab, barrelLocation.position, barrelLocation.rotation);
-        bullet.transform.SetParent(this.transform);
+        GameObject spawnedBullet = Instantiate(bulletPrefab, barrelLocation.position, barrelLocation.rotation);
+        spawnedBullet.GetComponent<Rigidbody>().velocity = barrelLocation.forward * shotPower;
 
-        Rigidbody bulletRb = bullet.GetComponent<Rigidbody>();
-        if (bulletRb != null)
-        {
-            bulletRb.AddForce(barrelLocation.forward * shotPower);
-        }
+        spawnedBullet.transform.SetParent(this.transform);
 
         // Attach the BulletScript to the bullet
-        BulletScript bulletScript = bullet.AddComponent<BulletScript>();
+        BulletScript bulletScript = spawnedBullet.AddComponent<BulletScript>();
 
+    }
+
+    public void DealDamage(Zombie zombieComponent)
+    {
+        zombieComponent.TakeDamage(12);
+
+        Player playerScript = GameObject.FindWithTag("Player").GetComponent<Player>();
+        if (playerScript != null)
+        {
+            playerScript.GainMoney(100);
+        }
+        else
+        {
+            Debug.LogError("ParentScript not found on the parent GameObject.");
+        }
     }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
 using Photon.Pun;
+using UnityEditor;
 public class XRGrabNetworkInteractable : XRGrabInteractable
 {
     private PhotonView view;
@@ -35,7 +36,7 @@ public class XRGrabNetworkInteractable : XRGrabInteractable
         {
             return;
         }
-        if (gameObject.GetComponent<Item>().inSlot)
+        if (gameObject.GetComponent<Item>().inSlot && gameObject.tag == "Money")
         {
             grabMoneyFromInventory();
         }
@@ -46,11 +47,14 @@ public class XRGrabNetworkInteractable : XRGrabInteractable
         view.RPC("grabMoneyFromInventoryRPC", RpcTarget.All);
     }
 
+    [PunRPC]
     public void grabMoneyFromInventoryRPC()
     {
         gameObject.GetComponent<Item>().inSlot = false;
         gameObject.GetComponent<Item>().currentSlot.ResetColor();
         gameObject.GetComponent<Item>().currentSlot = null;
+        //Money moneyScript = gameObject.GetComponent<Money>();
+        //moneyScript.SetAmount(GameObject.FindWithTag("Player").GetComponent<Player>().money);
     }
 
 }

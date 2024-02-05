@@ -20,8 +20,6 @@ public class InventoryVR : MonoBehaviour
     void Start()
     {
         view = Inventory.GetComponent<PhotonView>();
-        if (view == null)
-            Debug.Log("Non");
         Inventory.SetActive(false);
         UIActive = false;
     }

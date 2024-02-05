@@ -8,6 +8,9 @@ public class Zombie : MonoBehaviour
 {
     // Start is called before the first frame update
 
+   // Player[] players;
+   // Player nearestPlayer;
+
     [SerializeField] float health, maxHealth = 3f;
     [SerializeField] FloatingHealthBar healthBar;
 
@@ -30,6 +33,10 @@ public class Zombie : MonoBehaviour
 
     void Start()
     {
+        /*players = FindObjectsOfType<Player>();
+        if (players.Length > 1 ) {
+            Debug.Log("OK");
+        }*/
         view = GetComponent<PhotonView>();
         healthBar = GetComponentInChildren<FloatingHealthBar>();
         health = maxHealth;
@@ -44,7 +51,10 @@ public class Zombie : MonoBehaviour
 
     void Update()
     {
-        float distance = Vector3.Distance(transform.position, player.position);
+        /*float distanceOne = Vector3.Distance(transform.position, players[0].transform.position);
+        float distanceTwo = Vector3.Distance(transform.position, players[1].transform.position);
+        float distance = distanceOne;*/
+        float distance = Vector3.Distance(transform.position, player.transform.position);
         if (distance < followDistance)
         {
             agent.SetDestination(player.position);

@@ -1,6 +1,7 @@
 using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.XR;
@@ -44,7 +45,6 @@ public class Slot : MonoBehaviour
         
         if (leftController.TryGetFeatureValue(CommonUsages.gripButton, out bool isGrabButtonPressed) && !isGrabButtonPressed)
         {
-            Debug.Log("ahhh");
             InsertItem(obj);
         }
     }
@@ -56,23 +56,20 @@ public class Slot : MonoBehaviour
 
     public void InsertMoney()
     {
-        Debug.Log("InsertMoney");
         view.RPC("InsertMoneyRPC", RpcTarget.All);
-       
     }
 
     [PunRPC]
     public void InsertMoneyRPC() 
     {
-        Debug.Log("RPC");
-        GameObject m = PhotonNetwork.Instantiate("10000dol", transform.position, transform.rotation);
-        m.GetComponent<Rigidbody>().isKinematic = true;
-        m.transform.SetParent(gameObject.transform, true);
-        m.transform.localPosition = Vector3.zero;
-        m.transform.localEulerAngles = m.GetComponent<Item>().slotRotation;
-        m.GetComponent<Item>().inSlot = true;
-        m.GetComponent<Item>().currentSlot = this;
-        ItemInSlot = m;
+        GameObject moneyGameObject = PhotonNetwork.Instantiate("10000dol", transform.position, transform.rotation);
+        moneyGameObject.GetComponent<Rigidbody>().isKinematic = true;
+        moneyGameObject.transform.SetParent(gameObject.transform, true);
+        moneyGameObject.transform.localPosition = Vector3.zero;
+        moneyGameObject.transform.localEulerAngles = moneyGameObject.GetComponent<Item>().slotRotation;
+        moneyGameObject.GetComponent<Item>().inSlot = true;
+        moneyGameObject.GetComponent<Item>().currentSlot = this;
+        ItemInSlot = moneyGameObject;
     }
 
 

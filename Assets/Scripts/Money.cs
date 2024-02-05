@@ -9,12 +9,14 @@ public class Money : MonoBehaviour
 {
 
     PhotonView view;
+    public int amount;
 
     public AudioSource source;
     public AudioClip registerSound;
 
     void Start()
     {
+        amount = 0;
         view = GetComponent<PhotonView>();
     }
 
@@ -39,13 +41,18 @@ public class Money : MonoBehaviour
     {
         Destroy(gameObject);
     } 
+
+    public void SetAmount(int number)
+    {
+        amount = number;
+    }
     private void AddMoney(XRBaseInteractor interactor)
     {
         source.PlayOneShot(registerSound);
         GameObject player = GameObject.FindWithTag("Player");
 
         Player playerScript = player.GetComponent<Player>();
-        playerScript.GainMoney(100);
+        playerScript.GainMoney(amount);
         deletePrefab();
     }
 }

@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering;
+using Photon.Pun;
 
 public class BulletScript : MonoBehaviour
 {
@@ -21,10 +23,12 @@ public class BulletScript : MonoBehaviour
                 {
                     shootingScript.DealDamage(zombieComponent);
                 }
-                else
-                {
-                    Debug.LogError("ParentScript not found on the parent GameObject.");
-                }
+                /*else
+                {   //TEMP
+                    ShootSniper shootsniper = transform.parent.GetComponent<ShootSniper>();
+                    shootsniper.DealDamage(zombieComponent);
+                    //Debug.LogError("ParentScript not found on the parent GameObject.");
+                }*/
             }
             else
             {
@@ -32,10 +36,13 @@ public class BulletScript : MonoBehaviour
             }
 
         }
-
-        //Temp
-        if (collision.gameObject.name != "M1911")
-        { 
+        if (!collision.gameObject.CompareTag("Weapon") && !collision.gameObject.CompareTag("ZombieDoor"))
+        {
+            if (collision.gameObject.CompareTag("Door"))
+            {
+                Destroy(collision.gameObject);
+            }
+            Debug.Log(collision.gameObject.name);
             Destroy(gameObject);
         }
     }
