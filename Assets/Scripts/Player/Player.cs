@@ -2,6 +2,7 @@ using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.XR;
 using UnityEngine.XR.Interaction.Toolkit;
 using static ZombieSpawner;
 
@@ -53,6 +54,11 @@ public class Player : MonoBehaviour
             {
                 health += maxHealth / 200;
                 healthBar.UpdateHealthBar(health, maxHealth);
+            }
+            InputDevice leftController = InputDevices.GetDeviceAtXRNode(XRNode.LeftHand);
+            if (leftController.TryGetFeatureValue(CommonUsages.secondaryButton, out bool isXButtonPressed) && isXButtonPressed)
+            {
+                Debug.Log("OK");
             }
         }
     }

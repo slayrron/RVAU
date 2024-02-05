@@ -3,11 +3,17 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering;
 using Photon.Pun;
+using UnityEditor;
 
 public class BulletScript : MonoBehaviour
 {
     // Start is called before the first frame update
     void Start()
+    {
+        
+    }
+
+    public void RemoveDoors(GameObject obj)
     {
         
     }
@@ -40,6 +46,7 @@ public class BulletScript : MonoBehaviour
         {
             if (collision.gameObject.CompareTag("Door"))
             {
+                RemoveDoors(collision.gameObject);
                 Destroy(collision.gameObject);
             }
             Debug.Log(collision.gameObject.name);

@@ -10,6 +10,6 @@ public class Ressources : MonoBehaviour
 
     public void UpdateMoney(int currentMoney)
     {
-        currentMoneyText.text = currentMoney.ToString();
+        currentMoneyText.text = currentMoney.ToString() + "$";
     } 
 }
