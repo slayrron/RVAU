@@ -13,17 +13,18 @@ public class Player : MonoBehaviour
     public static Transform transformInstance;
     public static Player gameObjectInstance;
 
+
     private void Awake()
     {
         transformInstance = this.transform;
         gameObjectInstance = this;
-
     }
 
     #endregion
     [SerializeField] float health, maxHealth = 3f;
     public int money = 0;
     [SerializeField] FloatingHealthBar healthBar;
+    [SerializeField] GameObject koScreen;
     private Ressources ressources;
     private float lastTimeInjured;
     public ActionBasedContinuousMoveProvider continuousMoveProvider;
@@ -40,6 +41,9 @@ public class Player : MonoBehaviour
         ressources = GetComponent<Ressources>();
         healthBar = GetComponentInChildren<FloatingHealthBar>();
         health = maxHealth;
+        koScreen = GameObject.Find("KO Screen");
+        koScreen.SetActive(false);
+        koScreen.activeInHierarchy.Equals(false);
     }
 
     // Update is called once per frame
@@ -47,7 +51,7 @@ public class Player : MonoBehaviour
     {
         if (state == playerState.KO)
         {
-            Debug.Log("Player is KO");
+            koScreen.SetActive(true);
             continuousMoveProvider.enabled = false;
         }
         else
@@ -79,7 +83,7 @@ public class Player : MonoBehaviour
             state = playerState.KO;
         }
         else
-        {       
+        {     
             health -= damageAmount;
             Debug.Log("Ouch !");
             healthBar.UpdateHealthBar(health, maxHealth);
