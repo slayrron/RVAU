@@ -73,7 +73,6 @@ public class Zombie : MonoBehaviour
                     timeOfLastAttack = Time.time;
                     zombieAnimator.SetBool("Attack", true);
                     playerScript.TakeDamage(1);
-
                 }
             }
             else
@@ -99,6 +98,7 @@ public class Zombie : MonoBehaviour
     }
 
     [PunRPC]
+
     public void TakeDamageRPC(float damageAmount)
     {
         health -= damageAmount;
