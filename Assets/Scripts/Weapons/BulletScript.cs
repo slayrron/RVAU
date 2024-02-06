@@ -25,9 +25,18 @@ public class BulletScript : MonoBehaviour
             if (transform.parent != null)
             {
                 SimpleShoot shootingScript = transform.parent.GetComponent<SimpleShoot>();
+                ShootSniper shootsniper = transform.parent.GetComponent<ShootSniper>();
                 if (shootingScript != null)
                 {
                     shootingScript.DealDamage(zombieComponent);
+                }
+                else if (shootsniper != null)
+                {
+                    shootsniper.DealDamage(zombieComponent);
+                }
+                else
+                {
+                    Debug.LogError("ParentScript not found on the parent GameObject.");
                 }
                 /*else
                 {   //TEMP

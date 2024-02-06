@@ -30,6 +30,10 @@ public class Zombie : MonoBehaviour
     public float followDistance = 10f;
     private NavMeshAgent agent;
 
+    public AudioSource source;
+    public AudioClip zombieSound;
+    public AudioClip zombieSoundAtk;
+
 
     void Start()
     {
@@ -46,7 +50,7 @@ public class Zombie : MonoBehaviour
 
         if (zombieAnimator == null)
             zombieAnimator = GetComponentInChildren<Animator>();
-
+        source.PlayOneShot(zombieSound);
     }
 
     void Update()
@@ -72,6 +76,7 @@ public class Zombie : MonoBehaviour
                 {
                     timeOfLastAttack = Time.time;
                     zombieAnimator.SetBool("Attack", true);
+                    source.PlayOneShot(zombieSoundAtk);
                     playerScript.TakeDamage(1);
                 }
             }
