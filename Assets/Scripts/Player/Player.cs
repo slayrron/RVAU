@@ -97,8 +97,12 @@ public class Player : MonoBehaviour
 
     public void TakeDamage(float damageAmount)
     {
-        view.RPC("TakeDamageRPC", RpcTarget.All, damageAmount);
-        lastTimeInjured = Time.time;
+        if (view.IsMine)
+        {
+            view.RPC("TakeDamageRPC", RpcTarget.All, damageAmount);
+            lastTimeInjured = Time.time;
+        }
+       
     }
 
     [PunRPC]
