@@ -59,7 +59,7 @@ public class Zombie : MonoBehaviour
         float distanceTwo = Vector3.Distance(transform.position, players[1].transform.position);
         float distance = distanceOne;*/
         float distance = Vector3.Distance(transform.position, player.transform.position);
-        if (distance < followDistance)
+        if (distance < followDistance && player.GetComponent<Player>().state == Player.playerState.HEALTHY)
         {
             agent.SetDestination(player.position);
             zombieAnimator.SetBool("Walk", true);
@@ -89,6 +89,7 @@ public class Zombie : MonoBehaviour
         else
         {
             zombieAnimator.SetBool("Walk", false);
+            zombieAnimator.SetBool("Attack", false);
         }
     }
 

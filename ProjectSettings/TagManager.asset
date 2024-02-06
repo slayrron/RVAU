@@ -9,6 +9,7 @@ TagManager:
   - Money
   - ZombieDoor
   - Door
+  - test
   layers:
   - Default
   - TransparentFX

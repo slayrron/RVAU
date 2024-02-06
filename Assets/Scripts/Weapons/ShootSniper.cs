@@ -11,6 +11,8 @@ public class ShootSniper : MonoBehaviour
 
     public int damage;
 
+    private float reloadTimer = 0.5f;
+
     public TextMeshProUGUI text;
     public GameObject bulletPrefab;
     public GameObject casingPrefab;
@@ -39,10 +41,17 @@ public class ShootSniper : MonoBehaviour
 
     private void Update()
     {
-        if (Vector3.Angle(transform.up, Vector3.up) > 100 && currentammo < ammoMag)
+        if ( Vector3.Angle(transform.up, Vector3.up) > 100 && currentammo < ammoMag)
         {
-            Reload();
+            // Start the reload timer
+            reloadTimer -= Time.deltaTime;
+            if (reloadTimer <= 0f)
+            {
+                Reload();
+                reloadTimer = 0.5f; // Reset the reload timer
+            }
         }
+
         text.text = currentammo.ToString();
     }
 

@@ -38,7 +38,7 @@ public class Weapon : MonoBehaviour
         if (state == WeaponState.BUYABLE)
         {
             state = WeaponState.SOLD;
-            playerScript.BuyWeapon(price);
+            playerScript.LoseMoney(price);
         }
     }
 

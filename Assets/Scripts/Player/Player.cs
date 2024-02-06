@@ -32,7 +32,7 @@ public class Player : MonoBehaviour
     PhotonView view;
 
     public enum playerState { HEALTHY, KO };
-    private playerState state = playerState.HEALTHY;
+    public playerState state = playerState.HEALTHY;
 
     // Start is called before the first frame update
     void Start()
@@ -56,6 +56,7 @@ public class Player : MonoBehaviour
         }
         else
         {
+            //koScreen.SetActive(false);
             if (health < maxHealth && Time.time - lastTimeInjured > 4)
             {
                 health += maxHealth / 200;
@@ -64,7 +65,36 @@ public class Player : MonoBehaviour
             InputDevice leftController = InputDevices.GetDeviceAtXRNode(XRNode.LeftHand);
             if (leftController.TryGetFeatureValue(CommonUsages.secondaryButton, out bool isXButtonPressed) && isXButtonPressed)
             {
-                Debug.Log("OK");
+                RaycastHit hit;
+                
+                if (Physics.Raycast(transform.position, -transform.right, out hit, 2f))
+                {
+                    koScreen.SetActive(true);
+                    Debug.Log("OKK");
+                    // Check if the collided object has a GameObject
+                    GameObject collidedObject = hit.collider.gameObject;
+                    if (collidedObject.tag == "Door")
+                    {
+                        Door door = collidedObject.GetComponent<Door>();
+                        if (money >= door.price)
+                        {
+                            LoseMoney(door.price);
+                            door.RemoveDoors(collidedObject);
+                        }
+                    }
+
+                    else if (collidedObject.tag == "test")
+                    {
+                        Debug.Log("ici");
+                        Player player = collidedObject.GetComponent<Player>();
+                        if (player.state == playerState.KO)
+                        {
+                            player.state = playerState.HEALTHY;
+                            player.health = 1.5f;
+                            Debug.Log("revived !");
+                        }
+                    }
+                }
             }
         }
     }
@@ -83,9 +113,13 @@ public class Player : MonoBehaviour
             state = playerState.KO;
         }
         else
-        {     
-            health -= damageAmount;
-            healthBar.UpdateHealthBar(health, maxHealth);
+        {   
+            if (view.IsMine)
+            {
+                health -= damageAmount;
+                healthBar.UpdateHealthBar(health, maxHealth);
+            }
+           
         }
     }
 
@@ -95,7 +129,7 @@ public class Player : MonoBehaviour
         ressources.UpdateMoney(money);
     }
 
-    public void BuyWeapon(int amount)
+    public void LoseMoney(int amount)
     {
         money -= amount;
         ressources.UpdateMoney(money);

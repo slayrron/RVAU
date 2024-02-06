@@ -10,6 +10,8 @@ public class SimpleShoot : MonoBehaviour
     public int ammoMag = 7;
     private int currentammo;
 
+    private float reloadTimer = 0.4f;
+
     public TextMeshProUGUI text;
     [Header("Prefab Refrences")]
     public GameObject bulletPrefab;
@@ -66,7 +68,13 @@ public class SimpleShoot : MonoBehaviour
     {
        if (Vector3.Angle(transform.up, Vector3.up) > 100 && currentammo < ammoMag)
         {
-            Reload();
+            // Start the reload timer
+            reloadTimer -= Time.deltaTime;
+            if (reloadTimer <= 0f)
+            {
+                Reload();
+                reloadTimer = 0.4f; // Reset the reload timer
+            }
         }
        text.text = currentammo.ToString();
     }
