@@ -56,7 +56,6 @@ public class Player : MonoBehaviour
         }
         else
         {
-            //koScreen.SetActive(false);
             if (health < maxHealth && Time.time - lastTimeInjured > 4)
             {
                 health += maxHealth / 200;
@@ -69,8 +68,6 @@ public class Player : MonoBehaviour
                 
                 if (Physics.Raycast(transform.position, -transform.right, out hit, 2f))
                 {
-                    koScreen.SetActive(true);
-                    Debug.Log("OKK");
                     // Check if the collided object has a GameObject
                     GameObject collidedObject = hit.collider.gameObject;
                     if (collidedObject.tag == "Door")
@@ -85,7 +82,6 @@ public class Player : MonoBehaviour
 
                     else if (collidedObject.tag == "test")
                     {
-                        Debug.Log("ici");
                         Player player = collidedObject.GetComponent<Player>();
                         if (player.state == playerState.KO)
                         {
