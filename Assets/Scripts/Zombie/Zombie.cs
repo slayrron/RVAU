@@ -92,6 +92,12 @@ public class Zombie : MonoBehaviour
         }
     }
 
+    public void SetHealth(float amount)
+    {
+        maxHealth = amount;
+        health = amount;
+    }
+
     public void DealDamage(float damageAmount)
     {
         playerScript.TakeDamage(1);

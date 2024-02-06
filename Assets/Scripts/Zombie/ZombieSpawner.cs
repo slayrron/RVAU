@@ -24,6 +24,8 @@ public class ZombieSpawner : MonoBehaviour
     [SerializeField] private Transform[] spawners;
     [SerializeField] private List<GameObject> zombiesList;
 
+    public Door door;
+
     private void Start()
     {
         startingWaveCountdown = timeBetweenWaves;
@@ -85,10 +87,15 @@ public class ZombieSpawner : MonoBehaviour
 
     private void SpawnZombie(GameObject zombie)
     {
-        int spawner_id = Random.Range(0, spawners.Length);
+        int length = 5;
+        if (door == null)
+        {
+            length = spawners.Length;
+        }
+        int spawner_id = Random.Range(0, length);
         Transform selectedSpawner = spawners[spawner_id];
         GameObject newZombie = PhotonNetwork.Instantiate(zombie.name, selectedSpawner.position, selectedSpawner.rotation);
-        //GameObject newZombie = Instantiate(zombie, selectedSpawner.position, selectedSpawner.rotation);
+        newZombie.GetComponent<Zombie>().SetHealth(3 + currentWave * 1.4f); 
 
         zombiesList.Add(newZombie);
     }

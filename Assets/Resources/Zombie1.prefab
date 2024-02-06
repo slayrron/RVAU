@@ -681,7 +681,7 @@ MonoBehaviour:
   zombieAnimator: {fileID: 0}
   player: {fileID: 0}
   playerScript: {fileID: 0}
-  followDistance: 15
+  followDistance: 20
   source: {fileID: -8477529940801329960}
   zombieSound: {fileID: 8300000, guid: 583f9ba6186e57444abccb3f32910e43, type: 3}
   zombieSoundAtk: {fileID: 8300000, guid: df74a2e1f038c0546a9b0f5abe5ba6ac, type: 3}
@@ -801,13 +801,13 @@ MonoBehaviour:
   ShowParameterInspector: 1
   m_SynchronizeParameters:
   - Type: 4
-    SynchronizeType: 0
+    SynchronizeType: 2
     Name: Attack
   - Type: 9
     SynchronizeType: 0
     Name: Die
   - Type: 4
-    SynchronizeType: 0
+    SynchronizeType: 2
     Name: Walk
   m_SynchronizeLayers:
   - SynchronizeType: 0
