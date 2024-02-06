@@ -34,7 +34,6 @@ public class NetworkPlayer : MonoBehaviour
             {
                 item.enabled = false;
             }
-
         }
         
     }

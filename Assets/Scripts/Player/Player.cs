@@ -64,7 +64,21 @@ public class Player : MonoBehaviour
             InputDevice leftController = InputDevices.GetDeviceAtXRNode(XRNode.LeftHand);
             if (leftController.TryGetFeatureValue(CommonUsages.secondaryButton, out bool isXButtonPressed) && isXButtonPressed)
             {
-                Debug.Log("OK");
+                RaycastHit hit;
+                if (Physics.Raycast(transform.position, -transform.right, out hit, 2f))
+                {
+                    // Check if the collided object has a GameObject
+                    GameObject collidedObject = hit.collider.gameObject;
+                    if (collidedObject.tag == "Door")
+                    {
+                        Door door = collidedObject.GetComponent<Door>();
+                        if (money >= door.price)
+                        {
+                            LoseMoney(door.price);
+                            door.RemoveDoors(collidedObject);
+                        }
+                    }
+                }
             }
         }
     }
@@ -95,7 +109,7 @@ public class Player : MonoBehaviour
         ressources.UpdateMoney(money);
     }
 
-    public void BuyWeapon(int amount)
+    public void LoseMoney(int amount)
     {
         money -= amount;
         ressources.UpdateMoney(money);
