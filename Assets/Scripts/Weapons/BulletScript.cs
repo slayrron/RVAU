@@ -7,16 +7,13 @@ using UnityEditor;
 
 public class BulletScript : MonoBehaviour
 {
+    PhotonView view;
     // Start is called before the first frame update
     void Start()
     {
-        
+        view = GetComponent<PhotonView>();
     }
 
-    public void RemoveDoors(GameObject obj)
-    {
-        
-    }
 
     private void OnCollisionEnter(Collision collision)
     {
@@ -25,9 +22,18 @@ public class BulletScript : MonoBehaviour
             if (transform.parent != null)
             {
                 SimpleShoot shootingScript = transform.parent.GetComponent<SimpleShoot>();
+                ShootSniper shootsniper = transform.parent.GetComponent<ShootSniper>();
                 if (shootingScript != null)
                 {
                     shootingScript.DealDamage(zombieComponent);
+                }
+                else if (shootsniper != null)
+                {
+                    shootsniper.DealDamage(zombieComponent);
+                }
+                else
+                {
+                    Debug.LogError("ParentScript not found on the parent GameObject.");
                 }
                 /*else
                 {   //TEMP
@@ -44,12 +50,12 @@ public class BulletScript : MonoBehaviour
         }
         if (!collision.gameObject.CompareTag("Weapon") && !collision.gameObject.CompareTag("ZombieDoor"))
         {
-            if (collision.gameObject.CompareTag("Door"))
+            if (collision.gameObject.TryGetComponent<Door>(out Door door))
             {
-                RemoveDoors(collision.gameObject);
-                Destroy(collision.gameObject);
+                Debug.Log("TRUE");
+                door.RemoveDoors(collision.gameObject);
+                //Destroy(collision.gameObject);
             }
-            Debug.Log(collision.gameObject.name);
             Destroy(gameObject);
         }
     }

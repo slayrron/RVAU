@@ -85,7 +85,6 @@ public class Player : MonoBehaviour
         else
         {     
             health -= damageAmount;
-            Debug.Log("Ouch !");
             healthBar.UpdateHealthBar(health, maxHealth);
         }
     }
