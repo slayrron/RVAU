@@ -8,6 +8,7 @@ public class RocketScript : MonoBehaviour
 {
     PhotonView view;
     private GameObject explosion;
+    private float explosionRadius = 5f;
     // Start is called before the first frame update
     void Start()
     {
@@ -20,6 +21,40 @@ public class RocketScript : MonoBehaviour
     {
         GameObject explosion_instance = Instantiate(explosion, transform.position, Quaternion.identity);
         Destroy(explosion_instance, 1.9f);
+        var colliders = Physics.OverlapSphere(transform.position, explosionRadius);
+        foreach(var obj in colliders)
+        {
+            if (obj.TryGetComponent<Zombie>(out Zombie zombieComp))
+            {
+                if (transform.parent != null)
+                {
+                    ShootRocket shootingScript = transform.parent.GetComponent<ShootRocket>();
+                    if (shootingScript != null)
+                    {
+                        shootingScript.DealDamage(zombieComp);
+                    }
+                    else
+                    {
+                        Debug.LogError("ParentScript not found on the parent GameObject.");
+                    }
+                }
+                else
+                {
+                    Debug.LogError("This GameObject has no parent.");
+                }
+
+            }
+            if (!obj.gameObject.CompareTag("Weapon") && !obj.gameObject.CompareTag("ZombieDoor"))
+            {
+                if (obj.gameObject.TryGetComponent<Door>(out Door door))
+                {
+                    Debug.Log("TRUE");
+                    door.RemoveDoors(obj.gameObject);
+                    //Destroy(collision.gameObject);
+                }
+                Destroy(gameObject);
+            }
+        }
         if (collision.gameObject.TryGetComponent<Zombie>(out Zombie zombieComponent))
         {
             if (transform.parent != null)

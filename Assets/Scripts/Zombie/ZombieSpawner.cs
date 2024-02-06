@@ -37,7 +37,7 @@ public class ZombieSpawner : MonoBehaviour
         //Prevent spawning dupplication and wait for the second 
 
 
-        /*if (PhotonNetwork.IsMasterClient == false || PhotonNetwork.CurrentRoom.PlayerCount != 2)
+        /*if (PhotonNetwork.IsMasterClient == false || PhotonNetwork.CurrentRoom.PlayerCount != 3)
         {
             return;
         }*/
