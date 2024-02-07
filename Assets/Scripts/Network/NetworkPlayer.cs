@@ -43,18 +43,23 @@ public class NetworkPlayer : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (photonView.IsMine)
+        GameObject rig;
+        if (PhotonNetwork.IsMasterClient)
         {
-            MapPosition(head, headRig);
-            MapPosition(leftHand, leftHandRig);
-            MapPosition(rightHand, rightHandRig);
+            rig = GameObject.Find("XR Origin1(Clone)");
         }
+        else
+        {
+            rig = GameObject.Find("XR Origin2(Clone)");
+        }
+        transform.position = rig.transform.position;
+            /*MapPosition(head, headRig);
+            MapPosition(leftHand, leftHandRig);
+            MapPosition(rightHand, rightHandRig);*/
         
     }
     void MapPosition(Transform target, Transform rigTransform)
     {
-
-
         target.position = rigTransform.position;
         target.rotation = rigTransform.rotation;
     }

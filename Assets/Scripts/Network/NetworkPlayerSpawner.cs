@@ -15,10 +15,12 @@ public class NetworkPlayerSpawner : MonoBehaviourPunCallbacks
         if (PhotonNetwork.IsMasterClient)
         {
             spawnedPlayerPrefab = PhotonNetwork.Instantiate("Network Player", spawn1.transform.position, spawn1.transform.rotation);
+            PhotonNetwork.Instantiate("XR Origin1", spawn1.transform.position, spawn1.transform.rotation);
         }
         else
         {
             spawnedPlayerPrefab = PhotonNetwork.Instantiate("Network Player", spawn2.transform.position, spawn2.transform.rotation);
+            PhotonNetwork.Instantiate("XR Origin2", spawn2.transform.position, spawn2.transform.rotation);
 
         }
 

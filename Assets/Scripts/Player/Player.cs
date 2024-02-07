@@ -54,21 +54,7 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (test == false && PhotonNetwork.PlayerList.Length > 0)
-        {
-            if (PhotonNetwork.IsMasterClient)
-            {
-                transform.position = spawn1.transform.position;
-            }
-            else
-            {
-                transform.position = spawn2.transform.position;
-            }
-        }
-         if (PhotonNetwork.PlayerList.Length == 2)
-        {
-            test = true;
-        }
+       
         if (state == playerState.KO)
         {
             koScreen.SetActive(true);
