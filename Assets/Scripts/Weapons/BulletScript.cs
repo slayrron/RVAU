@@ -8,7 +8,8 @@ using UnityEditor;
 public class BulletScript : MonoBehaviour
 {
     PhotonView view;
-    // Start is called before the first frame update
+    public GameObject Weapon { get; set; }
+
     void Start()
     {
         view = GetComponent<PhotonView>();
@@ -19,10 +20,10 @@ public class BulletScript : MonoBehaviour
     {
         if (collision.gameObject.TryGetComponent<Zombie>(out Zombie zombieComponent))
         {
-            if (transform.parent != null)
+            if (Weapon != null)
             {
-                SimpleShoot shootingScript = transform.parent.GetComponent<SimpleShoot>();
-                ShootSniper shootsniper = transform.parent.GetComponent<ShootSniper>();
+                SimpleShoot shootingScript = Weapon.GetComponent<SimpleShoot>();
+                ShootSniper shootsniper = Weapon.GetComponent<ShootSniper>();
                 if (shootingScript != null)
                 {
                     shootingScript.DealDamage(zombieComponent);

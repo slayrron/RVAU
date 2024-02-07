@@ -14,6 +14,8 @@ public class ShootRocket : MonoBehaviour
     public TextMeshProUGUI text;
     public GameObject bulletPrefab;
 
+    
+
     [SerializeField] private Transform barrelLocation;
     [Tooltip("Bullet Speed")] private float shotPower = 10f;
 
@@ -64,10 +66,9 @@ public class ShootRocket : MonoBehaviour
             GameObject spawnedBullet = Instantiate(bulletPrefab, barrelLocation.position, barrelLocation.rotation * Quaternion.Euler(90, 0, 0));
             spawnedBullet.GetComponent<Rigidbody>().velocity = barrelLocation.forward * shotPower;
 
-            spawnedBullet.transform.SetParent(this.transform);
-
             // Attach the BulletScript to the bullet
             RocketScript rocketScript = spawnedBullet.AddComponent<RocketScript>();
+            rocketScript.Weapon = this.gameObject;
         }
     }
 

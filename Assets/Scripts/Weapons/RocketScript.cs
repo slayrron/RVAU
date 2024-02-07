@@ -8,7 +8,9 @@ public class RocketScript : MonoBehaviour
 {
     PhotonView view;
     private GameObject explosion;
-    private float explosionRadius = 5f;
+    private float explosionRadius = 2.5f;
+    public GameObject Weapon { get; set; }
+
     // Start is called before the first frame update
     void Start()
     {
@@ -26,9 +28,9 @@ public class RocketScript : MonoBehaviour
         {
             if (obj.TryGetComponent<Zombie>(out Zombie zombieComp))
             {
-                if (transform.parent != null)
+                if (Weapon != null)
                 {
-                    ShootRocket shootingScript = transform.parent.GetComponent<ShootRocket>();
+                    ShootRocket shootingScript = Weapon.GetComponent<ShootRocket>();
                     if (shootingScript != null)
                     {
                         shootingScript.DealDamage(zombieComp);
@@ -57,9 +59,9 @@ public class RocketScript : MonoBehaviour
         }
         if (collision.gameObject.TryGetComponent<Zombie>(out Zombie zombieComponent))
         {
-            if (transform.parent != null)
+            if (Weapon != null)
             {
-                ShootRocket shootingScript = transform.parent.GetComponent<ShootRocket>();
+                ShootRocket shootingScript = Weapon.GetComponent<ShootRocket>();
                 if (shootingScript != null)
                 {
                     shootingScript.DealDamage(zombieComponent);
