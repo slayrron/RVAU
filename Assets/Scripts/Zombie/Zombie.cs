@@ -8,8 +8,8 @@ public class Zombie : MonoBehaviour
 {
     // Start is called before the first frame update
 
-   // Player[] players;
-   // Player nearestPlayer;
+    Player[] players;
+    Player nearestPlayer;
 
     [SerializeField] float health, maxHealth = 3f;
     [SerializeField] FloatingHealthBar healthBar;
@@ -37,16 +37,21 @@ public class Zombie : MonoBehaviour
 
     void Start()
     {
-        /*players = FindObjectsOfType<Player>();
-        if (players.Length > 1 ) {
-            Debug.Log("OK");
-        }*/
-        view = GetComponent<PhotonView>();
+        if (GameObject.FindGameObjectsWithTag("NetworkPlayer").Length > 1) {
+            Debug.Log("LOL");
+        }
+        else
+        {
+            Debug.Log(PhotonNetwork.PlayerList[0]);
+        }
+      
         healthBar = GetComponentInChildren<FloatingHealthBar>();
         health = maxHealth;
         agent = GetComponent<NavMeshAgent>();
         player = Player.transformInstance;
         playerScript = Player.gameObjectInstance;
+
+        view = GetComponent<PhotonView>();
 
         if (zombieAnimator == null)
             zombieAnimator = GetComponentInChildren<Animator>();

@@ -31,6 +31,11 @@ public class Player : MonoBehaviour
 
     PhotonView view;
 
+    public GameObject spawn1;
+    public GameObject spawn2;
+
+    bool test = false;
+
     public enum playerState { HEALTHY, KO };
     public playerState state = playerState.HEALTHY;
 
@@ -49,6 +54,21 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (test == false && PhotonNetwork.PlayerList.Length > 0)
+        {
+            if (PhotonNetwork.IsMasterClient)
+            {
+                transform.position = spawn1.transform.position;
+            }
+            else
+            {
+                transform.position = spawn2.transform.position;
+            }
+        }
+         if (PhotonNetwork.PlayerList.Length == 2)
+        {
+            test = true;
+        }
         if (state == playerState.KO)
         {
             koScreen.SetActive(true);
@@ -66,7 +86,7 @@ public class Player : MonoBehaviour
             {
                 RaycastHit hit;
                 
-                if (Physics.Raycast(transform.position, -transform.right, out hit, 2f))
+                if (Physics.Raycast(transform.position, -transform.right, out hit, 5f))
                 {
                     // Check if the collided object has a GameObject
                     GameObject collidedObject = hit.collider.gameObject;
@@ -80,15 +100,16 @@ public class Player : MonoBehaviour
                         }
                     }
 
-                    else if (collidedObject.tag == "test")
+                    else
                     {
-                        Player player = collidedObject.GetComponent<Player>();
+                        Debug.Log(collidedObject.name);
+                       /* Player player = collidedObject.GetComponent<Player>();
                         if (player.state == playerState.KO)
                         {
                             player.state = playerState.HEALTHY;
                             player.health = 1.5f;
                             Debug.Log("revived !");
-                        }
+                        }*/
                     }
                 }
             }

@@ -21,18 +21,20 @@ public class NetworkPlayer : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        this.tag = "NetworkPlayer";
         photonView = GetComponent<PhotonView>();
-        XROrigin rig = FindObjectOfType<XROrigin>();
-        
-        headRig = rig.transform.Find("Camera Offset/Main Camera");
-        leftHandRig = rig.transform.Find("Camera Offset/Left Controller");
-        rightHandRig = rig.transform.Find("Camera Offset/Right Controller");
-
         if (photonView.IsMine)
         {
+            XROrigin rig = FindObjectOfType<XROrigin>();
+
+            headRig = rig.transform.Find("Camera Offset/Main Camera");
+            leftHandRig = rig.transform.Find("Camera Offset/Left Controller");
+            rightHandRig = rig.transform.Find("Camera Offset/Right Controller");
+
             foreach (var item in GetComponentsInChildren<Renderer>())
             {
                 item.enabled = false;
+                GetComponent<BoxCollider>().enabled = false;
             }
         }
         
