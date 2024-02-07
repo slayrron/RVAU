@@ -15,7 +15,7 @@ public class Door : MonoBehaviour
     public void RemoveDoors(GameObject obj)
     {
         //view.RPC("RemoveDoorsRPC", RpcTarget.All, obj);
-        Destroy(obj);
+        PhotonNetwork.Destroy(obj);
     }
 
     [PunRPC]

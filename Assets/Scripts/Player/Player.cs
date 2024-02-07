@@ -84,7 +84,7 @@ public class Player : MonoBehaviour
                     if (collidedObject.tag == "Door")
                     {
                         Door door = collidedObject.GetComponent<Door>();
-                        if (money >= door.price)
+                        if (PhotonNetwork.IsMasterClient && money >= door.price)
                         {
                             LoseMoney(door.price);
                             door.RemoveDoors(collidedObject);

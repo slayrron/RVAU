@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
+using Photon.Pun;
 
 public class ShootRocket : MonoBehaviour
 {
@@ -64,7 +65,7 @@ public class ShootRocket : MonoBehaviour
             { return; }
 
             // Create a bullet and add force on it in direction of the barrel
-            GameObject spawnedBullet = Instantiate(bulletPrefab, barrelLocation.position, barrelLocation.rotation * Quaternion.Euler(90, 0, 0));
+            GameObject spawnedBullet = PhotonNetwork.Instantiate("Rocket", barrelLocation.position, barrelLocation.rotation * Quaternion.Euler(90, 0, 0));
             spawnedBullet.GetComponent<Rigidbody>().velocity = barrelLocation.forward * shotPower;
 
             // Attach the BulletScript to the bullet
