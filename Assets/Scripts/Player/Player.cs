@@ -28,9 +28,7 @@ public class Player : MonoBehaviour
     private Ressources ressources;
     private float lastTimeInjured;
     public ActionBasedContinuousMoveProvider continuousMoveProvider;
-
     PhotonView view;
-
     public enum playerState { HEALTHY, KO };
     public playerState state = playerState.HEALTHY;
 

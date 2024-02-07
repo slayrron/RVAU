@@ -9,13 +9,28 @@ public class Weapon : MonoBehaviour
 {
     public enum WeaponState { BUYABLE, SOLD };
     public WeaponState state;
-
+    private Player holdBy;
     public int price;
     private XRGrabNetworkInteractable networkInteractable;
 
     public void Start()
     {
         state = WeaponState.BUYABLE;
+    }
+
+    void Update()
+    {
+        if(holdBy != null)
+        {
+            if (holdBy.state == Player.playerState.KO)
+            {
+                GetComponent<XRGrabNetworkInteractable>().enabled = false;
+            }
+            else
+            {
+                GetComponent<XRGrabNetworkInteractable>().enabled = true;
+            }
+        }
     }
 
     private void OnEnable()
@@ -33,12 +48,12 @@ public class Weapon : MonoBehaviour
         // Get The player in the tree (Controller -> Camera -> Player XR Rig)
         GameObject player = GameObject.FindWithTag("Player");
 
-        Player playerScript = player.GetComponent<Player>();
+        holdBy = player.GetComponent<Player>();
 
         if (state == WeaponState.BUYABLE)
         {
             state = WeaponState.SOLD;
-            playerScript.LoseMoney(price);
+            holdBy.LoseMoney(price);
         }
     }
 

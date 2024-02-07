@@ -22,6 +22,7 @@ public class ShootRocket : MonoBehaviour
     public AudioSource source;
     public AudioClip fireSound;
     public AudioClip reloadSound;
+    public AudioClip explosionSound;
 
     // Start is called before the first frame update
     void Start()
@@ -69,6 +70,7 @@ public class ShootRocket : MonoBehaviour
             // Attach the BulletScript to the bullet
             RocketScript rocketScript = spawnedBullet.AddComponent<RocketScript>();
             rocketScript.Weapon = this.gameObject;
+            rocketScript._explosionSound = explosionSound;
         }
     }
 

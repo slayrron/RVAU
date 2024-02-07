@@ -511,7 +511,7 @@ MonoBehaviour:
   observableSearch: 2
   ObservedComponents:
   - {fileID: 3157988081260740465}
-  sceneViewId: 10
+  sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
 --- !u!114 &3157988081260740465
@@ -660,6 +660,7 @@ MonoBehaviour:
   source: {fileID: 5146267175699321873}
   fireSound: {fileID: 8300000, guid: 9ac2bd4064bd9514da4e84c5dda5773b, type: 3}
   reloadSound: {fileID: 8300000, guid: 104cd916bdee935438791dae5d0c72c9, type: 3}
+  explosionSound: {fileID: 0}
 --- !u!1 &6927964984015675112
 GameObject:
   m_ObjectHideFlags: 0

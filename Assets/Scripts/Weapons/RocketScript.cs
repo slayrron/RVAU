@@ -10,6 +10,7 @@ public class RocketScript : MonoBehaviour
     private GameObject explosion;
     private float explosionRadius = 2.5f;
     public GameObject Weapon { get; set; }
+    public AudioClip _explosionSound;
 
     // Start is called before the first frame update
     void Start()
@@ -21,6 +22,7 @@ public class RocketScript : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
+        AudioSource.PlayClipAtPoint(_explosionSound, transform.position);
         GameObject explosion_instance = Instantiate(explosion, transform.position, Quaternion.identity);
         Destroy(explosion_instance, 1.9f);
         var colliders = Physics.OverlapSphere(transform.position, explosionRadius);
