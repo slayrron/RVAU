@@ -1914,6 +1914,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 717172537}
     m_Modifications:
+    - target: {fileID: 1255995514, guid: 927232924abbe7749aba0b85a30aa1db, type: 3}
+      propertyPath: gripAction
+      value: 
+      objectReference: {fileID: 6558622148059887818, guid: c348712bda248c246b8c49b3db54643f, type: 3}
+    - target: {fileID: 1255995514, guid: 927232924abbe7749aba0b85a30aa1db, type: 3}
+      propertyPath: pinchAction
+      value: 
+      objectReference: {fileID: -4289430672226363583, guid: c348712bda248c246b8c49b3db54643f, type: 3}
     - target: {fileID: 7252658992801458734, guid: 927232924abbe7749aba0b85a30aa1db, type: 3}
       propertyPath: m_Name
       value: LeftHand
@@ -8932,6 +8940,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 883015856}
     m_Modifications:
+    - target: {fileID: 110376561, guid: eb778dafc62c34d42ba231befaedfcdf, type: 3}
+      propertyPath: gripAction
+      value: 
+      objectReference: {fileID: -1758520528963094988, guid: c348712bda248c246b8c49b3db54643f, type: 3}
+    - target: {fileID: 110376561, guid: eb778dafc62c34d42ba231befaedfcdf, type: 3}
+      propertyPath: pinchAction
+      value: 
+      objectReference: {fileID: 7904272356298805229, guid: c348712bda248c246b8c49b3db54643f, type: 3}
     - target: {fileID: 8249230696956201412, guid: eb778dafc62c34d42ba231befaedfcdf, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -15517,7 +15533,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   state: 0
-  price: 100
+  price: 0
 --- !u!114 &1565561342
 MonoBehaviour:
   m_ObjectHideFlags: 0
