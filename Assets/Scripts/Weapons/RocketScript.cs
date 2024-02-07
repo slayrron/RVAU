@@ -19,12 +19,17 @@ public class RocketScript : MonoBehaviour
         explosion = Resources.Load<GameObject>("Explosion");
     }
 
+    private IEnumerator DestroyAfterDelay(GameObject obj, float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        Destroy(obj);
+    }
 
     private void OnCollisionEnter(Collision collision)
     {
         AudioSource.PlayClipAtPoint(_explosionSound, transform.position);
-        GameObject explosion_instance = Instantiate(explosion, transform.position, Quaternion.identity);
-        Destroy(explosion_instance, 1.9f);
+        GameObject explosion_instance = PhotonNetwork.Instantiate("Explosion", transform.position, Quaternion.identity);
+        StartCoroutine(DestroyAfterDelay(explosion_instance, 2f));
         var colliders = Physics.OverlapSphere(transform.position, explosionRadius);
         foreach(var obj in colliders)
         {
