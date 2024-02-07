@@ -86,10 +86,9 @@ public class ShootSniper : MonoBehaviour
             GameObject spawnedBullet = Instantiate(bulletPrefab, barrelLocation.position, barrelLocation.rotation);
             spawnedBullet.GetComponent<Rigidbody>().velocity = barrelLocation.forward * shotPower;
 
-            spawnedBullet.transform.SetParent(this.transform);
-
             // Attach the BulletScript to the bullet
             BulletScript bulletScript = spawnedBullet.AddComponent<BulletScript>();
+            bulletScript.Weapon = this.gameObject;
         }
         else
         {

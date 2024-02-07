@@ -24,13 +24,14 @@ public class Player : MonoBehaviour
     [SerializeField] float health, maxHealth = 3f;
     public int money = 0;
     [SerializeField] FloatingHealthBar healthBar;
-    [SerializeField] GameObject koScreen;
+    GameObject koScreen;
+    GameObject winScreen;
+    private ZombieSpawner zombieSpawner;
+    ZombieSpawner _zombieSpawner;
     private Ressources ressources;
     private float lastTimeInjured;
     public ActionBasedContinuousMoveProvider continuousMoveProvider;
-
     PhotonView view;
-
     public enum playerState { HEALTHY, KO };
     public playerState state = playerState.HEALTHY;
 
@@ -40,15 +41,25 @@ public class Player : MonoBehaviour
         view = GetComponent<PhotonView>();
         ressources = GetComponent<Ressources>();
         healthBar = GetComponentInChildren<FloatingHealthBar>();
+        zombieSpawner = GameObject.Find("ZombieSpawner").GetComponent<ZombieSpawner>();
         health = maxHealth;
         koScreen = GameObject.Find("KO Screen");
         koScreen.SetActive(false);
         koScreen.activeInHierarchy.Equals(false);
+        winScreen = GameObject.Find("Win Screen");
+        winScreen.SetActive(false);
+        winScreen.activeInHierarchy.Equals(false);
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (zombieSpawner.state == SpawnState.FINISHED)
+        {
+            winScreen.SetActive(true);
+            healthBar = null;
+            ressources.currentMoneyText.text = "";
+        }
         if (state == playerState.KO)
         {
             koScreen.SetActive(true);

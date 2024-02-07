@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 public class Ressources : MonoBehaviour
 {
-    [SerializeField] private TextMeshProUGUI currentMoneyText;
+    public TextMeshProUGUI currentMoneyText;
 
     public void UpdateMoney(int currentMoney)
     {

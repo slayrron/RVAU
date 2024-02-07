@@ -102,7 +102,6 @@ public class SimpleShoot : MonoBehaviour
         // Create a bullet and add force on it in direction of the barrel
         GameObject bullet;
         bullet = Instantiate(bulletPrefab, barrelLocation.position, barrelLocation.rotation);
-        bullet.transform.SetParent(this.transform); // A CHANGER (balles suivre trajectoire arme)
 
         Rigidbody bulletRb = bullet.GetComponent<Rigidbody>();
         if (bulletRb != null)
@@ -112,7 +111,7 @@ public class SimpleShoot : MonoBehaviour
 
         // Attach the BulletScript to the bullet
         BulletScript bulletScript = bullet.AddComponent<BulletScript>();
-
+        bulletScript.Weapon = this.gameObject;
     }
 
     //This function creates a casing at the ejection slot
