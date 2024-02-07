@@ -36,10 +36,10 @@ public class ZombieSpawner : MonoBehaviour
     private void Update()
     {
         //Prevent spawning dupplication and wait for the second 
-        /*if (PhotonNetwork.IsMasterClient == false || PhotonNetwork.CurrentRoom.PlayerCount != 3)
+        if (PhotonNetwork.IsMasterClient == false || PhotonNetwork.CurrentRoom.PlayerCount != 2)
         {
             return;
-        }*/
+        }
         if (state != SpawnState.FINISHED)
         {
             if (state == SpawnState.WAITING)
