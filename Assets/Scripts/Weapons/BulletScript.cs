@@ -51,12 +51,6 @@ public class BulletScript : MonoBehaviour
         }
         if (!collision.gameObject.CompareTag("Weapon") && !collision.gameObject.CompareTag("ZombieDoor"))
         {
-            if (collision.gameObject.TryGetComponent<Door>(out Door door))
-            {
-                Debug.Log("TRUE");
-                door.RemoveDoors(collision.gameObject);
-                //Destroy(collision.gameObject);
-            }
             Destroy(gameObject);
         }
     }

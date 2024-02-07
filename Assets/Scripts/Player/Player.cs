@@ -77,7 +77,7 @@ public class Player : MonoBehaviour
             {
                 RaycastHit hit;
                 
-                if (Physics.Raycast(transform.position, -transform.right, out hit, 2f))
+                if (Physics.Raycast(transform.position, -transform.right, out hit, 4f))
                 {
                     // Check if the collided object has a GameObject
                     GameObject collidedObject = hit.collider.gameObject;

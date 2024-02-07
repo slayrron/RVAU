@@ -27,7 +27,7 @@ public class Zombie : MonoBehaviour
     public Player playerScript;
 
 
-    public float followDistance = 10f;
+    public float followDistance = 20f;
     private NavMeshAgent agent;
 
     public AudioSource source;
