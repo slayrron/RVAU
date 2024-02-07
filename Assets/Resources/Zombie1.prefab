@@ -681,7 +681,7 @@ MonoBehaviour:
   zombieAnimator: {fileID: 0}
   player: {fileID: 0}
   playerScript: {fileID: 0}
-  followDistance: 20
+  followDistance: 35
   source: {fileID: -8477529940801329960}
   zombieSound: {fileID: 8300000, guid: 583f9ba6186e57444abccb3f32910e43, type: 3}
   zombieSoundAtk: {fileID: 8300000, guid: df74a2e1f038c0546a9b0f5abe5ba6ac, type: 3}
