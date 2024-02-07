@@ -660,7 +660,7 @@ MonoBehaviour:
   source: {fileID: 5146267175699321873}
   fireSound: {fileID: 8300000, guid: 9ac2bd4064bd9514da4e84c5dda5773b, type: 3}
   reloadSound: {fileID: 8300000, guid: 104cd916bdee935438791dae5d0c72c9, type: 3}
-  explosionSound: {fileID: 0}
+  explosionSound: {fileID: 8300000, guid: 3fb69ea4bd856f34dae52edfb0719109, type: 3}
 --- !u!1 &6927964984015675112
 GameObject:
   m_ObjectHideFlags: 0

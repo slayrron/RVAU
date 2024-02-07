@@ -5,7 +5,7 @@ using Photon.Pun;
 
 public class ZombieSpawner : MonoBehaviour
 {
-    public enum SpawnState { SPAWNING, WAITING, COUNTING };
+    public enum SpawnState { SPAWNING, WAITING, COUNTING, FINISHED};
 
     // VARIABLES
     [SerializeField] private Wave[] waves;
@@ -13,12 +13,13 @@ public class ZombieSpawner : MonoBehaviour
     [SerializeField] private float timeBetweenWaves = 3f;
     [SerializeField] private float startingWaveCountdown = 0;
 
-    private SpawnState state = SpawnState.COUNTING;
+    public SpawnState state = SpawnState.COUNTING;
 
     private int currentWave;
     public AudioSource source;
     public AudioClip endRoundSound;
     public AudioClip startRoundSound;
+    public AudioClip winMusic;
 
     // REFERENCES
     [SerializeField] private Transform[] spawners;
@@ -35,35 +36,36 @@ public class ZombieSpawner : MonoBehaviour
     private void Update()
     {
         //Prevent spawning dupplication and wait for the second 
-
-
         /*if (PhotonNetwork.IsMasterClient == false || PhotonNetwork.CurrentRoom.PlayerCount != 3)
         {
             return;
         }*/
-        if (state == SpawnState.WAITING)
+        if (state != SpawnState.FINISHED)
         {
-            // Check if all zombies are dead
-            if (!ZombiesAreDead())
+            if (state == SpawnState.WAITING)
             {
-                return;
+                // Check if all zombies are dead
+                if (!ZombiesAreDead())
+                {
+                    return;
+                }
+                // Wave finished
+                else
+                {
+                    CompleteWave();
+                }
             }
-            // Wave finished
+            if (startingWaveCountdown <= 0)
+            {
+                if (state != SpawnState.SPAWNING)
+                {
+                    StartCoroutine(SpawnWave(waves[currentWave]));
+                }
+            }
             else
             {
-                CompleteWave();
+                startingWaveCountdown -= Time.deltaTime;
             }
-        }
-        if (startingWaveCountdown <= 0)
-        {
-            if (state != SpawnState.SPAWNING)
-            {
-                StartCoroutine(SpawnWave(waves[currentWave]));
-            }
-        }
-        else
-        {
-            startingWaveCountdown -= Time.deltaTime;
         }
     }
 
@@ -116,8 +118,10 @@ public class ZombieSpawner : MonoBehaviour
     private void CompleteWave()
     {
         Debug.Log("Wave completed");
-        source.PlayOneShot(endRoundSound);
-
+        if (currentWave != waves.Length - 1)
+        {
+            source.PlayOneShot(endRoundSound);
+        }
         state = SpawnState.COUNTING;
         // BREAKTIME
         startingWaveCountdown = timeBetweenWaves;
@@ -125,6 +129,8 @@ public class ZombieSpawner : MonoBehaviour
         if (currentWave == waves.Length - 1)
         {
             // Reroll the last wave
+            source.PlayOneShot(winMusic);
+            state = SpawnState.FINISHED;
             Debug.Log("END GAME");
         }
         else
